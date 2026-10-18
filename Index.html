@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RBT 测验 - 储水种植箱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+        .view-section {
+            display: none;
+        }
+        .view-section.active {
+            display: block;
+        }
+        body {
+            background-image: url('https://images.unsplash.com/photo-1585320806297-9794b3e4ce18?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-gray-800 font-sans p-4 sm:p-8 relative">
+    <!-- 背景遮罩 -->
+    <div class="absolute inset-0 bg-green-900/60 backdrop-blur-[2px] z-0 fixed"></div>
+
+    <!-- 主容器 -->
+    <div class="relative z-10 max-w-7xl mx-auto">
+
+        <!-- 注册页面 -->
+        <div id="view-register" class="view-section active">
+            <div class="max-w-6xl mx-auto mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- 左侧表单 -->
+                <div class="lg:col-span-2 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+                    <div class="p-8 pb-6">
+                        <div class="flex items-center gap-3 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-700" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2.18-1.18V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72l5 2.73 5-2.73v3.72z"/>
+                            </svg>
+                            <h1 class="text-3xl font-bold text-gray-800">Student Registration / 学生登录</h1>
+                        </div>
+                        <p class="text-gray-500 mb-6 text-sm">请填写英文姓名与指定后缀的 Email 账号以开启练习。</p>
+                        
+                        <div class="border-b border-gray-200 mb-6"></div>
+                        
+                        <div class="flex justify-end mb-6">
+                            <button onclick="switchView('teacher_login')" class="flex items-center gap-2 bg-green-50 text-green-700 px-5 py-2.5 rounded-xl hover:bg-green-100 transition-colors font-medium border border-green-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                </svg>
+                                教师专区 / Teacher Portal
+                            </button>
+                        </div>
+
+                        <form id="register-form" class="space-y-6">
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">
+                                    姓名 (中文/英文) / Name (CH/EN) <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="student-name" required placeholder="例如: 陈小明 / Tan Ah Kow" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"/>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">
+                                    MOE Email / IDME 账号 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="email" id="student-email" required placeholder="例如: m-12345678@moe-dl.edu.my" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"/>
+                            </div>
+
+                            <div class="flex justify-end pt-4">
+                                <button type="submit" class="bg-green-700 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-green-800 transition-colors shadow-lg shadow-green-200 flex items-center gap-2">
+                                    Start Quiz / 开始答题 
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- 右侧排行榜 -->
+                <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-6 border border-gray-100 flex flex-col max-h-[600px]">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 pb-3 border-b border-gray-200">
+                        🏆 荣誉排行榜 Leaderboard
+                    </h2>
+                    <div class="overflow-y-auto flex-1 pr-2 custom-scrollbar">
+                        <ul id="leaderboard-list" class="space-y-3">
+                            <li class="text-gray-500 text-center mt-10">加载中... (Loading...)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 答题页面 -->
+        <div id="view-quiz" class="view-section">
+            <div class="max-w-3xl mx-auto mt-8 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+                <div class="h-48 w-full bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1416879598555-220b8fa04b34?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+                        <h1 class="text-white font-bold text-2xl drop-shadow-md">🌿 RBT 单元五：自制储水种植箱</h1>
+                    </div>
+                </div>
+                
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <span id="quiz-progress" class="text-green-700 font-bold bg-green-100 px-4 py-1.5 rounded-full text-sm"></span>
+                        <span id="quiz-score" class="text-gray-500 font-medium bg-gray-100 px-4 py-1.5 rounded-full text-sm"></span>
+                    </div>
+                    
+                    <h2 id="quiz-question" class="text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line"></h2>
+                    
+                    <div id="quiz-options" class="space-y-3 mb-8">
+                        <!-- 选项将由JS生成 -->
+                    </div>
+
+                    <!-- 答案解析 -->
+                    <div id="quiz-feedback" class="p-5 rounded-xl mb-6 hidden">
+                        <h3 id="feedback-title" class="font-bold text-lg mb-2"></h3>
+                        <p id="feedback-text" class="text-gray-700 leading-relaxed"></p>
+                    </div>
+
+                    <div id="quiz-next-container" class="flex justify-end mt-6 border-t pt-6 border-gray-100 hidden">
+                        <button id="btn-next" onclick="handleNextQuestion()" class="bg-green-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-green-700 transition-colors shadow-lg">
+                            下一题 / Next Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果页面 -->
+        <div id="view-result" class="view-section">
+            <div class="max-w-2xl mx-auto mt-12 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden text-center border border-gray-100">
+                <div class="h-40 w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')"></div>
+                
+                <div class="p-10 relative -mt-16">
+                    <div class="mb-6 inline-block p-4 rounded-full bg-white shadow-xl border-4 border-green-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">测验完成! Quiz Completed!</h2>
+                    <p class="text-gray-500 mb-8">五年级设计与工艺（RBT）单元五：自制储水种植箱</p>
+                    
+                    <div id="final-score-display" class="text-6xl font-black mb-6"></div>
+                    
+                    <p class="text-lg text-gray-700 mb-10">
+                        干得好, <span id="final-name" class="font-bold"></span>! 你的成绩已记录在案。
+                    </p>
+                    
+                    <button onclick="resetToHome()" class="bg-green-100 text-green-800 px-8 py-3 rounded-xl font-bold hover:bg-green-200 transition-colors">
+                        返回首页 / Return to Home
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 教师登录页 -->
+        <div id="view-teacher_login" class="view-section">
+            <div class="max-w-md mx-auto mt-20 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-gray-100">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Teacher Login</h2>
+                    <button onclick="switchView('register')" class="text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form id="teacher-login-form">
+                    <div class="mb-6">
+                        <label class="block text-gray-700 font-semibold mb-2">Admin Password</label>
+                        <input type="password" id="teacher-password" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter password..."/>
+                        <p id="login-error" class="text-red-500 text-sm mt-2 hidden">密码错误 (Incorrect Password)</p>
+                    </div>
+                    <button type="submit" class="w-full bg-purple-700 text-white py-3 rounded-xl font-bold hover:bg-purple-800 transition-colors shadow-lg">
+                        Access Portal
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 教师看板 -->
+        <div id="view-teacher_dashboard" class="view-section">
+            <div class="max-w-5xl mx-auto mt-10 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-gray-100">
+                <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-purple-600" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                        </svg>
+                        Student Records (RBT Unit 5)
+                    </h2>
+                    <div class="flex gap-4">
+                        <button onclick="fetchTeacherRecords()" class="text-purple-600 hover:bg-purple-50 px-4 py-2 rounded-lg font-medium transition-colors">
+                            Refresh
+                        </button>
+                        <button onclick="switchView('register'); document.getElementById('teacher-password').value='';" class="text-gray-500 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium transition-colors border border-gray-200">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                <th class="p-4 rounded-tl-xl font-semibold">Date & Time</th>
+                                <th class="p-4 font-semibold">Student Name</th>
+                                <th class="p-4 font-semibold">Email Account</th>
+                                <th class="p-4 rounded-tr-xl font-semibold">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacher-records-body">
+                            <tr><td colspan="4" class="text-center py-12 text-gray-500">Loading records...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Initialization
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'rbt-quiz-app';
+        const firebaseConfig = {
+            apiKey: "AIzaSyDW-mdfu0qg6potrmguIA76D9kmQPvbgLc",
+            authDomain: "rbt-y5-unit-4.firebaseapp.com",
+            projectId: "rbt-y5-unit-4",
+            storageBucket: "rbt-y5-unit-4.firebasestorage.app",
+            messagingSenderId: "648511694063",
+            appId: "1:648511694063:web:8aa97aad7eac3627f8271a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // State Variables
+        let state = {
+            studentName: '',
+            studentEmail: '',
+            currentQIndex: 0,
+            score: 0,
+            isAnswered: false,
+            selectedOption: null
+        };
+
+        const quizQuestions = [
+            {
+                question: "1. 在储水种植箱结构中，用来直接向储水槽注入水分的组件是什么？",
+                options: ["A. 溢水孔", "B. 水位计", "C. PVC注水管", "D. 沥水篮"],
+                answer: 2,
+                explanation: "PVC注水管连接储水槽，方便直接注水，无需从土壤表面浇水。"
+            },
+            {
+                question: "2. 储水种植箱上的“溢水孔”主要有什么功能？",
+                options: ["A. 为植物根部输送空气", "B. 防止储水槽水分过多而淹没根部导致腐烂", "C. 方便从外部观察储水槽的水位", "D. 用于注入液态肥料"],
+                answer: 1,
+                explanation: "溢水孔可以在水满时排出多余水分，防止水淹没根部造成烂根。"
+            },
+            {
+                question: "3. 储水种植箱中的水位计通常由哪些材料组合而成？",
+                options: ["A. 铁丝与泡沫塑料", "B. 塑料管与泥炭苔", "C. 玻璃管与珍珠岩", "D. 铜线与椰壳纤维"],
+                answer: 0,
+                explanation: "水位计由铁丝和泡沫塑料浮块制作，浮块随水位升降展示水量。"
+            },
+            {
+                question: "4. 由多种苔藓植物经千年累积腐化而成，具有质地轻、吸水和保水性强特点的基质是什么？",
+                options: ["A. 珍珠岩", "B. 蛭石", "C. 泥炭苔", "D. 陶粒"],
+                answer: 2,
+                explanation: "泥炭苔（Peat Moss）由苔藓腐化而成，保水吸水性强并提供养分。"
+            },
+            {
+                question: "5. 在储水种植系统中，如果毛细颗粒之间的缝隙“太大”，会导致什么后果？",
+                options: ["A. 基质会过于潮湿", "B. 水无法升上基质", "C. 水位计无法上升", "D. 农作物根部会立即腐烂"],
+                answer: 1,
+                explanation: "毛细颗粒缝隙过大时，毛细作用减弱，水分无法自动上升至基质。"
+            },
+            {
+                question: "6. 如果毛细颗粒之间的缝隙“太小”，会对种植系统产生什么影响？",
+                options: ["A. 水无法升上基质", "B. 储水槽无法储水", "C. 基质会过于潮湿", "D. 溢水孔会堵塞"],
+                answer: 2,
+                explanation: "缝隙太小会导致吸水过多，使基质过湿。"
+            },
+            {
+                question: "7. 下列哪一种材料属于常用的毛细颗粒，具有质轻、透气性强及排水性好的特点？",
+                options: ["A. 泥炭苔", "B. 椰壳纤维", "C. 珍珠岩", "D. 堆肥土"],
+                answer: 2,
+                explanation: "珍珠岩（Perlite）质轻且透气排水性佳，属于常用毛细颗粒。"
+            },
+            {
+                question: "8. 储水种植箱主要是利用什么原理将储水槽中的水分输送到上面的基质中？",
+                options: ["A. 蒸发作用", "B. 毛细作用", "C. 光合作用", "D. 呼吸作用"],
+                answer: 1,
+                explanation: "水分沿着微细孔隙自动向上输送的现象称为毛细作用。"
+            },
+            {
+                question: "9. 根据课本，使用自制储水种植箱种植农作物有哪些优点？\n① 蚊子不易滋生\n② 农作物根部不易腐烂\n③ 介质和养分不易流失\n④ 病虫草害风险小",
+                options: ["A. ① 和 ②", "B. ①、③ 和 ④", "C. ②、③ 和 ④", "D. ①、②、③ 和 ④"],
+                answer: 3,
+                explanation: "四项均为储水种植箱的独特优点。"
+            },
+            {
+                question: "10. 在策划和评估储水种植箱的设计草图时，通常需要考量哪些因素？",
+                options: ["A. 仅考量美观性", "B. 仅考量材料成本", "C. 实用性、耐用性、稳固性、美观性及经济性等", "D. 仅考量储水量大小"],
+                answer: 2,
+                explanation: "评估草图时需全面考量实用、耐用、稳固、美观及经济性等因素。"
+            }
+        ];
+
+        // Expose switchView to global window for inline onclick handlers
+        window.switchView = (viewId) => {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            window.scrollTo(0,0);
+        };
+
+        window.resetToHome = () => {
+            state.studentName = '';
+            state.studentEmail = '';
+            document.getElementById('student-name').value = '';
+            document.getElementById('student-email').value = '';
+            window.switchView('register');
+        };
+
+        // Initialize App & Firestore Listener
+        async function init() {
+            try {
+                await signInAnonymously(auth);
+                
+                const recordsRef = collection(db, 'artifacts', appId, 'public', 'data', 'rbt_quiz_results');
+                onSnapshot(recordsRef, (snapshot) => {
+                    const records = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                    records.sort((a, b) => {
+                        if (b.score !== a.score) return b.score - a.score;
+                        return new Date(a.timestamp) - new Date(b.timestamp);
+                    });
+                    
+                    const leaderboard = records.slice(0, 10);
+                    const listEl = document.getElementById('leaderboard-list');
+                    
+                    if (leaderboard.length === 0) {
+                        listEl.innerHTML = '<p class="text-gray-500 text-center mt-10">暂无挑战记录 (No records yet)</p>';
+                    } else {
+                        listEl.innerHTML = leaderboard.map((student, index) => {
+                            let badgeClass = 'bg-green-50 text-green-700';
+                            if(index === 0) badgeClass = 'bg-yellow-100 text-yellow-700 border-yellow-200';
+                            else if(index === 1) badgeClass = 'bg-gray-100 text-gray-700 border-gray-300';
+                            else if(index === 2) badgeClass = 'bg-orange-100 text-orange-700 border-orange-200';
+                            
+                            return `
+                                <li class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+                                    <div class="flex items-center gap-3">
+                                        <span class="w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm border ${badgeClass}">
+                                            ${index + 1}
+                                        </span>
+                                        <div>
+                                            <p class="font-bold text-gray-800 text-sm truncate max-w-[120px]" title="${student.name}">${student.name}</p>
+                                            <p class="text-xs text-gray-400">${new Date(student.timestamp).toLocaleDateString()}</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-green-600">
+                                        ${student.score} <span class="text-xs text-gray-400 font-normal">/ 10</span>
+                                    </div>
+                                </li>
+                            `;
+                        }).join('');
+                    }
+                }, (error) => {
+                    console.error("Failed to fetch leaderboard:", error);
+                });
+            } catch (e) {
+                console.error("Auth failed:", e);
+            }
+        }
+        init();
+
+        // Sound Engine
+        const playTone = (isCorrect) => {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (isCorrect) {
+                    const notes = [523.25, 659.25, 783.99, 1046.50]; 
+                    notes.forEach((freq, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gainNode = audioCtx.createGain();
+                        osc.connect(gainNode);
+                        gainNode.connect(audioCtx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.08);
+                        gainNode.gain.setValueAtTime(0, audioCtx.currentTime + i * 0.08);
+                        gainNode.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + i * 0.08 + 0.02);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.08 + 0.25);
+                        osc.start(audioCtx.currentTime + i * 0.08);
+                        osc.stop(audioCtx.currentTime + i * 0.08 + 0.25);
+                    });
+                } else {
+                    const osc = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    osc.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.4);
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+                    osc.start(audioCtx.currentTime);
+                    osc.stop(audioCtx.currentTime + 0.4);
+                }
+            } catch (e) {}
+        };
+
+        // Form Submission
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('student-name').value;
+            const email = document.getElementById('student-email').value;
+            
+            if (!email.trim().toLowerCase().endsWith('@moe-dl.edu.my')) {
+                alert("⚠️ 邮箱格式错误！\nEmail 必须以 @moe-dl.edu.my 结尾。");
+                return;
+            }
+            
+            state.studentName = name;
+            state.studentEmail = email;
+            state.currentQIndex = 0;
+            state.score = 0;
+            state.isAnswered = false;
+            
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+            } catch(e) {}
+            
+            renderQuiz();
+            window.switchView('quiz');
+        });
+
+        // Quiz Logic
+        function renderQuiz() {
+            const q = quizQuestions[state.currentQIndex];
+            document.getElementById('quiz-progress').innerText = `第 ${state.currentQIndex + 1} 题 / 共 ${quizQuestions.length} 题`;
+            document.getElementById('quiz-score').innerText = `分数 Score: ${state.score}`;
+            document.getElementById('quiz-question').innerText = q.question;
+            
+            const optionsHtml = q.options.map((opt, index) => {
+                let btnClass = "w-full text-left p-4 rounded-xl border-2 transition-all duration-200 font-medium text-lg ";
+                
+                if (!state.isAnswered) {
+                    btnClass += "border-gray-200 hover:border-green-500 hover:bg-green-50 text-gray-700 bg-white shadow-sm hover:shadow";
+                } else {
+                    if (index === q.answer) {
+                        btnClass += "border-green-500 bg-green-100 text-green-800 shadow-md transform scale-[1.02] z-10 relative"; 
+                    } else if (index === state.selectedOption) {
+                        btnClass += "border-red-500 bg-red-100 text-red-800 shadow-md"; 
+                    } else {
+                        btnClass += "border-gray-200 text-gray-400 opacity-50 cursor-not-allowed bg-gray-50"; 
+                    }
+                }
+                
+                return `<button onclick="window.handleOptionClick(${index})" ${state.isAnswered ? 'disabled' : ''} class="${btnClass}">${opt}</button>`;
+            }).join('');
+            
+            document.getElementById('quiz-options').innerHTML = optionsHtml;
+            
+            const feedbackContainer = document.getElementById('quiz-feedback');
+            const nextContainer = document.getElementById('quiz-next-container');
+            
+            if (state.isAnswered) {
+                feedbackContainer.classList.remove('hidden');
+                nextContainer.classList.remove('hidden');
+                
+                const isCorrect = state.selectedOption === q.answer;
+                feedbackContainer.className = `p-5 rounded-xl mb-6 ${isCorrect ? 'bg-green-100 border border-green-200' : 'bg-red-50 border border-red-200'}`;
+                
+                const titleEl = document.getElementById('feedback-title');
+                titleEl.innerText = isCorrect ? "🎉 回答正确！(Correct!)" : "❌ 回答错误！(Incorrect!)";
+                titleEl.className = `font-bold text-lg mb-2 ${isCorrect ? 'text-green-800' : 'text-red-800'}`;
+                
+                document.getElementById('feedback-text').innerHTML = `<span class="font-semibold">解析 (Explanation):</span> ${q.explanation}`;
+                
+                document.getElementById('btn-next').innerText = state.currentQIndex < quizQuestions.length - 1 ? '下一题 / Next Question' : '完成测验 / Finish Quiz';
+            } else {
+                feedbackContainer.classList.add('hidden');
+                nextContainer.classList.add('hidden');
+            }
+        }
+
+        window.handleOptionClick = (index) => {
+            if (state.isAnswered) return;
+            state.selectedOption = index;
+            state.isAnswered = true;
+            
+            const q = quizQuestions[state.currentQIndex];
+            if (index === q.answer) {
+                state.score++;
+                playTone(true);
+            } else {
+                playTone(false);
+            }
+            renderQuiz();
+        };
+
+        window.handleNextQuestion = async () => {
+            if (state.currentQIndex < quizQuestions.length - 1) {
+                state.currentQIndex++;
+                state.isAnswered = false;
+                state.selectedOption = null;
+                renderQuiz();
+            } else {
+                window.switchView('result');
+                const finalScore = state.score;
+                const pass = finalScore >= 5;
+                
+                const scoreDisplay = document.getElementById('final-score-display');
+                scoreDisplay.innerHTML = `${finalScore} <span class="text-3xl text-gray-400">/ 10</span>`;
+                scoreDisplay.className = `text-6xl font-black mb-6 ${pass ? 'text-green-500' : 'text-orange-500'}`;
+                
+                document.getElementById('final-name').innerText = state.studentName;
+                
+                if (auth.currentUser) {
+                    try {
+                        const recordsRef = collection(db, 'artifacts', appId, 'public', 'data', 'rbt_quiz_results');
+                        await addDoc(recordsRef, {
+                            name: state.studentName,
+                            email: state.studentEmail,
+                            score: finalScore,
+                            total: quizQuestions.length,
+                            timestamp: new Date().toISOString()
+                        });
+                    } catch (e) {
+                        console.error("Failed to save score:", e);
+                    }
+                }
+            }
+        };
+
+        // Teacher Portal
+        document.getElementById('teacher-login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const pwd = document.getElementById('teacher-password').value;
+            if (pwd === '2020Hui%%') {
+                document.getElementById('login-error').classList.add('hidden');
+                window.switchView('teacher_dashboard');
+                window.fetchTeacherRecords();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        });
+
+        window.fetchTeacherRecords = async () => {
+            const tbody = document.getElementById('teacher-records-body');
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-12 text-gray-500">Loading records...</td></tr>';
+            try {
+                const recordsRef = collection(db, 'artifacts', appId, 'public', 'data', 'rbt_quiz_results');
+                const q = query(recordsRef);
+                const snapshot = await getDocs(q);
+                const records = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                records.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                if(records.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center py-12 text-gray-500">No quiz records found yet.</td></tr>';
+                } else {
+                    tbody.innerHTML = records.map(record => `
+                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                            <td class="p-4 text-sm text-gray-500">${new Date(record.timestamp).toLocaleString()}</td>
+                            <td class="p-4 font-medium text-gray-800">${record.name}</td>
+                            <td class="p-4 text-gray-600">${record.email}</td>
+                            <td class="p-4">
+                                <span class="inline-flex items-center justify-center px-3 py-1 rounded-full font-bold text-sm ${record.score >= 5 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                    ${record.score} / ${record.total}
+                                </span>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (e) {
+                console.error("Failed to fetch records", e);
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center py-12 text-red-500">Error loading records.</td></tr>';
+            }
+        };
+    </script>
+</body>
+</html>
